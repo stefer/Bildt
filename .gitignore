@@ -30,6 +30,9 @@ $RECYCLE.BIN/
 .vscode/
 *.code-workspace
 
+## VS Files
+.vs
+
 ## DotNet specific
 project.lock.json
 project.fragment.lock.json
