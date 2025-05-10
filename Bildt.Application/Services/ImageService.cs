@@ -1,13 +1,58 @@
+using System.Drawing;
 using Bildt.Core.Models;
 
 namespace Bildt.Application.Services
 {
-    public class ImageService
+    public static class ImageService
     {
-        public void SetDescription(Image image, string description)
+        public static void SetDescription(ImageModel image)
         {
-            image.Description = description;
-            // Logic to save description as Exif metadata
+            SetImageDescription(image.FilePath, image.Description);
+        }
+
+        public static ImageModel GetImage(string filePath)
+        {
+            return new ImageModel
+            {
+                FilePath = filePath,
+                Description = GetImageDescription(filePath) ?? ""
+            };
+        }
+
+        private const int PropertyTagImageTitle = 270;
+
+        private static string? GetImageDescription(string filePath)
+        {
+            using var image = Image.FromFile(filePath);
+            var imageDescriptionItem = image.PropertyItems.Where(x => x.Id == PropertyTagImageTitle).FirstOrDefault();
+            if (imageDescriptionItem is {Type: 2, Value: { }})
+            {
+                return System.Text.Encoding.UTF8.GetString(imageDescriptionItem.Value).Trim('\0');
+            }
+            return null;
+        }
+
+        private static void SetImageDescription(string filePath, string description)
+        {
+            using var image = Image.FromFile(filePath);
+
+            // Create a new PropertyItem
+            var propertyItem = image.PropertyItems[0]; // Use an existing PropertyItem as a template
+            propertyItem.Id = PropertyTagImageDescription;
+            propertyItem.Type = 2; // ASCII
+            propertyItem.Value = System.Text.Encoding.ASCII.GetBytes(description + '\0'); // Add null terminator
+            propertyItem.Len = propertyItem.Value.Length;
+
+            // Set the PropertyItem
+            image.SetPropertyItem(propertyItem);
+
+            // Save the image back to the file
+            string tempFilePath = filePath + ".tmp";
+            image.Save(tempFilePath, image.RawFormat);
+
+            // Replace the original file with the updated one
+            File.Delete(filePath);
+            File.Move(tempFilePath, filePath);
         }
     }
 }

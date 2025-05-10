@@ -7,5 +7,6 @@ I want to build windows desktop application where a user can
 - Export the images with a white frame and the description in the lower part of the white frame
 
 I want it to be in modern C#, Winforms.
+The user interface language is swedish only.
 
 Application should be structured as in Onion arcitecture.

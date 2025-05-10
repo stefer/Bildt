@@ -4,10 +4,15 @@
     <ProjectReference Include="..\Bildt.Core\Bildt.Core.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <PackageReference Include="System.Drawing.Common" Version="9.0.4" />
+  </ItemGroup>
+
   <PropertyGroup>
     <TargetFramework>net9.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+    <NoWarn>CA1416</NoWarn> <!-- Suppress platform compatibility warning -->
   </PropertyGroup>
 
 </Project>

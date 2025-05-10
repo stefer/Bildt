@@ -1,4 +1,5 @@
-using System.Windows.Forms;
+using Bildt.Core.Models;
+using Bildt.Application.Services;
 
 namespace Bildt.Presentation
 {
@@ -6,6 +7,8 @@ namespace Bildt.Presentation
     {
         private Button? loadImagesButton;
         private Button? exportButton;
+        private ListView? imageList;
+        private ImageList? imageThumbnails;
 
         public MainForm()
         {
@@ -22,7 +25,7 @@ namespace Bildt.Presentation
             // MainForm
             // 
             ClientSize = new Size(800, 450);
-            Name = "MainForm";
+            Name = "Bildt";
             ResumeLayout(false);
         }
 
@@ -30,7 +33,7 @@ namespace Bildt.Presentation
         {
             loadImagesButton = new Button
             {
-                Text = "Load Images",
+                Text = "Ladda",
                 Location = new Point(10, 10),
                 Size = new Size(100, 30)
             };
@@ -38,7 +41,7 @@ namespace Bildt.Presentation
 
             exportButton = new Button
             {
-                Text = "Export",
+                Text = "Exportera",
                 Location = new Point(120, 10),
                 Size = new Size(100, 30)
             };
@@ -46,11 +49,74 @@ namespace Bildt.Presentation
 
             Controls.Add(loadImagesButton);
             Controls.Add(exportButton);
+
+            imageThumbnails = new ImageList
+            {
+                ImageSize = new Size(64, 64), // Thumbnail size
+                ColorDepth = ColorDepth.Depth32Bit
+            };
+
+            imageList = new ListView
+            {
+                Location = new Point(420, 50),
+                Size = new Size(200, 300),
+                View = View.LargeIcon,
+                LargeImageList = imageThumbnails,
+                MultiSelect = false,
+                FullRowSelect = true,
+            };
+            imageList.SelectedIndexChanged += ImageList_SelectedIndexChanged;
+            Controls.Add(imageList);
+        }
+
+        private void ImageList_SelectedIndexChanged(object? sender, EventArgs e)
+        {
+            ArgumentNullException.ThrowIfNull(imageList);
+            ArgumentNullException.ThrowIfNull(sender);
+
+            // Get file path of the selected image
+            if (imageList.SelectedItems.Count > 0 && imageList.SelectedItems[0] is ListViewItem selectedItem && selectedItem.Tag is not null)
+            {
+                string filePath = selectedItem.Tag.ToString() ?? string.Empty;
+                var imageModel = ImageService.GetImage(filePath);
+                // DisplayImage(imageModel);
+            }
         }
 
         private void LoadImagesButton_Click(object? sender, EventArgs e)
         {
+            ArgumentNullException.ThrowIfNull(imageList);
+            ArgumentNullException.ThrowIfNull(imageThumbnails);
+            ArgumentNullException.ThrowIfNull(sender);
+
             // Logic to load images
+            using var openFileDialog = new OpenFileDialog() {
+                Title = "Välj bilder",
+                Multiselect = true,
+                Filter = "Bildfiler|*.jpg;*.jpeg;*.png;*.bmp"
+            };
+
+            if (openFileDialog.ShowDialog() == DialogResult.OK)
+            {
+                foreach (var filePath in openFileDialog.FileNames)
+                {
+                    // Generate a thumbnail for the image
+                    using var image = Image.FromFile(filePath);
+                    var thumbnail = image.GetThumbnailImage(64, 64, () => false, IntPtr.Zero);
+
+                    // Add the thumbnail to the ImageList
+                    imageThumbnails.Images.Add(filePath, thumbnail);
+
+                    // Add the image to the ListView with the thumbnail
+                    var listViewItem = new ListViewItem
+                    {
+                        Tag = filePath,
+                        Text = Path.GetFileName(filePath),
+                        ImageKey = filePath // Use the file path as the key for the thumbnail
+                    };
+                    imageList.Items.Add(listViewItem);                
+                }
+            }
         }
 
         private void ExportButton_Click(object? sender, EventArgs e)

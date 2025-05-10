@@ -2,6 +2,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Bildt.Core\Bildt.Core.csproj" />
+    <ProjectReference Include="..\Bildt.Application\Bildt.Application.csproj" />
   </ItemGroup>
 
   <PropertyGroup>
