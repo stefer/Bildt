@@ -38,7 +38,7 @@ namespace Bildt.Application.Services
 
             // Create a new PropertyItem
             var propertyItem = image.PropertyItems[0]; // Use an existing PropertyItem as a template
-            propertyItem.Id = PropertyTagImageDescription;
+            propertyItem.Id = PropertyTagImageTitle;
             propertyItem.Type = 2; // ASCII
             propertyItem.Value = System.Text.Encoding.ASCII.GetBytes(description + '\0'); // Add null terminator
             propertyItem.Len = propertyItem.Value.Length;
