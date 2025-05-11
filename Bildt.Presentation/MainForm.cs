@@ -1,13 +1,4 @@
 ﻿using Bildt.Application.Services;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
 
 namespace Bildt.Presentation
 {
@@ -24,7 +15,7 @@ namespace Bildt.Presentation
             {
                 Title = "Välj bilder",
                 Multiselect = true,
-                Filter = "Bildfiler|*.jpg;*.jpeg;*.png;*.bmp"
+                Filter = "Bildfiler|*.jpg;*.jpeg;*.png;*.bmp",
             };
 
             if (openFileDialog.ShowDialog() == DialogResult.OK)
@@ -38,12 +29,15 @@ namespace Bildt.Presentation
                     // Add the thumbnail to the ImageList
                     imageList1.Images.Add(filePath, thumbnail);
 
+                    var imageModel = ImageService.GetImage(filePath);
+
                     // Add the image to the ListView with the thumbnail
                     var listViewItem = new ListViewItem
                     {
                         Tag = filePath,
+                        Checked = File.Exists(imageModel.TitledImagePath),
                         Text = Path.GetFileName(filePath),
-                        ImageKey = filePath // Use the file path as the key for the thumbnail
+                        ImageKey = filePath // Use the file path as the key for the thumbnail,
                     };
                     listView1.Items.Add(listViewItem);
                 }

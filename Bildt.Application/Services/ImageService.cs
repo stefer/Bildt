@@ -34,21 +34,22 @@ namespace Bildt.Application.Services
 
         private static void SetImageDescription(string filePath, string description)
         {
-            using var image = Image.FromFile(filePath);
-
-            // Create a new PropertyItem
-            var propertyItem = image.PropertyItems[0]; // Use an existing PropertyItem as a template
-            propertyItem.Id = PropertyTagImageTitle;
-            propertyItem.Type = 2; // ASCII
-            propertyItem.Value = System.Text.Encoding.ASCII.GetBytes(description + '\0'); // Add null terminator
-            propertyItem.Len = propertyItem.Value.Length;
-
-            // Set the PropertyItem
-            image.SetPropertyItem(propertyItem);
-
-            // Save the image back to the file
             string tempFilePath = filePath + ".tmp";
-            image.Save(tempFilePath, image.RawFormat);
+            using (var image = Image.FromFile(filePath))
+            {
+                // Create a new PropertyItem
+                var propertyItem = image.PropertyItems[0]; // Use an existing PropertyItem as a template
+                propertyItem.Id = PropertyTagImageTitle;
+                propertyItem.Type = 2; // ASCII
+                propertyItem.Value = System.Text.Encoding.UTF8.GetBytes(description + '\0'); // Add null terminator
+                propertyItem.Len = propertyItem.Value.Length;
+
+                // Set the PropertyItem
+                image.SetPropertyItem(propertyItem);
+
+                // Save the image back to the file
+                image.Save(tempFilePath, image.RawFormat);
+            }
 
             // Replace the original file with the updated one
             File.Delete(filePath);

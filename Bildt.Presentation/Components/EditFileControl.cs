@@ -1,16 +1,6 @@
 ﻿using Bildt.Application.Services;
 using Bildt.Core.Models;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
 using static System.Net.Mime.MediaTypeNames;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement.Window;
 
 namespace Bildt.Presentation.Components
 {
@@ -29,34 +19,60 @@ namespace Bildt.Presentation.Components
         public void SetImage(string filePath)
         {
             this.SuspendLayout();
+            ClearPreview();
             _image = ImageService.GetImage(filePath);
             if (_image != null)
             {
-                textBox1.Text = _image.Description;
-                pictureBox1.ImageLocation = filePath;
+                descriptionTextBox.Text = _image.Description;
+                System.Drawing.Image image;
+                using (var tmpImage = System.Drawing.Image.FromFile(filePath))
+                {
+                    image = new Bitmap(tmpImage);
+                }
+                origPictureBox.Image = image;
+                UpdatePreview(image);
             }
-            UpdatePreview();
             this.ResumeLayout();
         }
 
-        private void UpdatePreview()
+        private void ClearPreview()
         {
-            if (pictureBox1.Image is null || _image is null)
+            editedPictureBox.Image = null;
+        }
+
+        private void UpdatePreview(System.Drawing.Image image)
+        {
+            var newImage = new Bitmap(image.Width + borderSize * 2, image.Height + borderSize + borderBottom);
+            using (var g = Graphics.FromImage(newImage))
             {
-                pictureBox2.Image = null;
-                return;
-            };
+                g.FillRectangle(Brushes.White, 0, 0, newImage.Width, newImage.Height);
+                g.DrawImage(image, borderSize, borderSize, image.Width, image.Height);
+                if (_image?.Description != null)
+                {
+                    g.DrawString(_image.Description, new System.Drawing.Font("Arial", 24), Brushes.Black, new PointF(borderSize + 10, newImage.Height - borderBottom));
+                }
+                g.Flush();
+            }
 
-            var image = pictureBox1.Image;
+            editedPictureBox.Image = newImage;
+        }
 
-            var newImage = new Bitmap(image.Width + borderSize*2, image.Height + borderSize + borderBottom);
-            using var g = Graphics.FromImage(newImage);
-            g.FillRectangle(Brushes.White, 0, 0, newImage.Width, newImage.Height);
-            g.DrawImage(image, borderSize, borderSize);
-            g.DrawString(_image.Description, new System.Drawing.Font("Arial", 12), Brushes.Black, new PointF(10, newImage.Height - borderBottom));
-            g.Flush();
+        private void UpdateDescription(object sender, EventArgs e)
+        {
+            if (_image != null && _image.Description != descriptionTextBox.Text)
+            {
+                _image.Description = descriptionTextBox.Text;
+                ImageService.SetDescription(_image);
+                SetImage(_image.FilePath);
+            }
+        }
 
-            pictureBox2.Image = newImage;
+        private void Save(object sender, EventArgs e)
+        {
+            if (_image?.TitledImagePath != null)
+            {
+                editedPictureBox.Image?.Save(_image.TitledImagePath, System.Drawing.Imaging.ImageFormat.Jpeg);
+            }
         }
     }
 }

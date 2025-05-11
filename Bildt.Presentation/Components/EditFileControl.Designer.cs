@@ -29,13 +29,16 @@
         private void InitializeComponent()
         {
             tableLayoutPanel1 = new TableLayoutPanel();
-            textBox1 = new TextBox();
-            button1 = new Button();
-            pictureBox1 = new PictureBox();
-            pictureBox2 = new PictureBox();
+            descriptionTextBox = new TextBox();
+            origPictureBox = new PictureBox();
+            editedPictureBox = new PictureBox();
+            flowLayoutPanel1 = new FlowLayoutPanel();
+            updateButton = new Button();
+            saveButton = new Button();
             tableLayoutPanel1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)pictureBox2).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)origPictureBox).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)editedPictureBox).BeginInit();
+            flowLayoutPanel1.SuspendLayout();
             SuspendLayout();
             // 
             // tableLayoutPanel1
@@ -43,10 +46,10 @@
             tableLayoutPanel1.ColumnCount = 2;
             tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
             tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
-            tableLayoutPanel1.Controls.Add(textBox1, 0, 1);
-            tableLayoutPanel1.Controls.Add(button1, 1, 1);
-            tableLayoutPanel1.Controls.Add(pictureBox1, 0, 0);
-            tableLayoutPanel1.Controls.Add(pictureBox2, 1, 0);
+            tableLayoutPanel1.Controls.Add(descriptionTextBox, 0, 1);
+            tableLayoutPanel1.Controls.Add(origPictureBox, 0, 0);
+            tableLayoutPanel1.Controls.Add(editedPictureBox, 1, 0);
+            tableLayoutPanel1.Controls.Add(flowLayoutPanel1, 1, 1);
             tableLayoutPanel1.Dock = DockStyle.Fill;
             tableLayoutPanel1.Location = new Point(0, 0);
             tableLayoutPanel1.Name = "tableLayoutPanel1";
@@ -56,41 +59,66 @@
             tableLayoutPanel1.Size = new Size(745, 529);
             tableLayoutPanel1.TabIndex = 0;
             // 
-            // textBox1
+            // descriptionTextBox
             // 
-            textBox1.Dock = DockStyle.Fill;
-            textBox1.Location = new Point(3, 497);
-            textBox1.Name = "textBox1";
-            textBox1.Size = new Size(366, 27);
-            textBox1.TabIndex = 0;
+            descriptionTextBox.Dock = DockStyle.Fill;
+            descriptionTextBox.Location = new Point(3, 491);
+            descriptionTextBox.Name = "descriptionTextBox";
+            descriptionTextBox.PlaceholderText = "Beskrivning av bilden";
+            descriptionTextBox.Size = new Size(366, 27);
+            descriptionTextBox.TabIndex = 0;
+            descriptionTextBox.Leave += UpdateDescription;
             // 
-            // button1
+            // origPictureBox
             // 
-            button1.Dock = DockStyle.Left;
-            button1.Location = new Point(375, 497);
-            button1.Name = "button1";
-            button1.Size = new Size(94, 29);
-            button1.TabIndex = 1;
-            button1.Text = "Spara";
-            button1.UseVisualStyleBackColor = true;
+            origPictureBox.Dock = DockStyle.Fill;
+            origPictureBox.Location = new Point(3, 3);
+            origPictureBox.Name = "origPictureBox";
+            origPictureBox.Size = new Size(366, 482);
+            origPictureBox.SizeMode = PictureBoxSizeMode.StretchImage;
+            origPictureBox.TabIndex = 2;
+            origPictureBox.TabStop = false;
             // 
-            // pictureBox1
+            // editedPictureBox
             // 
-            pictureBox1.Dock = DockStyle.Fill;
-            pictureBox1.Location = new Point(3, 3);
-            pictureBox1.Name = "pictureBox1";
-            pictureBox1.Size = new Size(366, 488);
-            pictureBox1.TabIndex = 2;
-            pictureBox1.TabStop = false;
+            editedPictureBox.Dock = DockStyle.Fill;
+            editedPictureBox.Location = new Point(375, 3);
+            editedPictureBox.Name = "editedPictureBox";
+            editedPictureBox.Size = new Size(367, 482);
+            editedPictureBox.SizeMode = PictureBoxSizeMode.StretchImage;
+            editedPictureBox.TabIndex = 3;
+            editedPictureBox.TabStop = false;
             // 
-            // pictureBox2
+            // flowLayoutPanel1
             // 
-            pictureBox2.Dock = DockStyle.Fill;
-            pictureBox2.Location = new Point(375, 3);
-            pictureBox2.Name = "pictureBox2";
-            pictureBox2.Size = new Size(367, 488);
-            pictureBox2.TabIndex = 3;
-            pictureBox2.TabStop = false;
+            flowLayoutPanel1.AutoSize = true;
+            flowLayoutPanel1.Controls.Add(updateButton);
+            flowLayoutPanel1.Controls.Add(saveButton);
+            flowLayoutPanel1.Dock = DockStyle.Fill;
+            flowLayoutPanel1.Location = new Point(375, 491);
+            flowLayoutPanel1.Name = "flowLayoutPanel1";
+            flowLayoutPanel1.Size = new Size(367, 35);
+            flowLayoutPanel1.TabIndex = 4;
+            // 
+            // updateButton
+            // 
+            updateButton.Location = new Point(3, 3);
+            updateButton.Name = "updateButton";
+            updateButton.Size = new Size(94, 29);
+            updateButton.TabIndex = 0;
+            updateButton.Text = "Uppdatera";
+            updateButton.UseVisualStyleBackColor = true;
+            updateButton.Click += UpdateDescription;
+            // 
+            // saveButton
+            // 
+            saveButton.Location = new Point(103, 3);
+            saveButton.Name = "saveButton";
+            saveButton.Size = new Size(94, 29);
+            saveButton.TabIndex = 1;
+            saveButton.Text = "Spara";
+            saveButton.UseVisualStyleBackColor = true;
+            saveButton.Click += Save;
             // 
             // EditFileControl
             // 
@@ -101,17 +129,20 @@
             Size = new Size(745, 529);
             tableLayoutPanel1.ResumeLayout(false);
             tableLayoutPanel1.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
-            ((System.ComponentModel.ISupportInitialize)pictureBox2).EndInit();
+            ((System.ComponentModel.ISupportInitialize)origPictureBox).EndInit();
+            ((System.ComponentModel.ISupportInitialize)editedPictureBox).EndInit();
+            flowLayoutPanel1.ResumeLayout(false);
             ResumeLayout(false);
         }
 
         #endregion
 
         private TableLayoutPanel tableLayoutPanel1;
-        private TextBox textBox1;
-        private Button button1;
-        private PictureBox pictureBox1;
-        private PictureBox pictureBox2;
+        private TextBox descriptionTextBox;
+        private PictureBox origPictureBox;
+        private PictureBox editedPictureBox;
+        private FlowLayoutPanel flowLayoutPanel1;
+        private Button updateButton;
+        private Button saveButton;
     }
 }
