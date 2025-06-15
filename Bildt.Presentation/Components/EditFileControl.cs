@@ -6,9 +6,6 @@ namespace Bildt.Presentation.Components
 {
     public partial class EditFileControl : UserControl
     {
-        private const int borderSize = 20;
-        private const int borderBottom = 40;
-
         private ImageModel? _image;
 
         public EditFileControl()
@@ -42,6 +39,8 @@ namespace Bildt.Presentation.Components
 
         private void UpdatePreview(System.Drawing.Image image)
         {
+            var borderSize = Convert.ToInt32(image.Width * 0.05);
+            var borderBottom = Convert.ToInt32(image.Width * 0.10);
             var newImage = new Bitmap(image.Width + borderSize * 2, image.Height + borderSize + borderBottom);
             using (var g = Graphics.FromImage(newImage))
             {
@@ -49,7 +48,7 @@ namespace Bildt.Presentation.Components
                 g.DrawImage(image, borderSize, borderSize, image.Width, image.Height);
                 if (_image?.Description != null)
                 {
-                    g.DrawString(_image.Description, new System.Drawing.Font("Arial", 24), Brushes.Black, new PointF(borderSize + 10, newImage.Height - borderBottom));
+                    g.DrawString(_image.Description, new System.Drawing.Font("Arial", FindFontSize(g, "XXX", borderBottom * 0.95f) / 2), Brushes.Black, new PointF(borderSize + 10, newImage.Height - borderBottom));
                 }
                 g.Flush();
             }
@@ -73,6 +72,29 @@ namespace Bildt.Presentation.Components
             {
                 editedPictureBox.Image?.Save(_image.TitledImagePath, System.Drawing.Imaging.ImageFormat.Jpeg);
             }
+        }
+
+        private float FindFontSize(Graphics g, string text, float desiredHeight)
+        {
+            float min = 1f;
+            float max = 200f;
+            float tolerance = 0.5f;
+
+            while (max - min > tolerance)
+            {
+                float mid = (min + max) / 2;
+                using (var testFont = new System.Drawing.Font("Arial", mid))
+                {
+                    float height = g.MeasureString(text, testFont).Height;
+
+                    if (height < desiredHeight)
+                        min = mid;
+                    else
+                        max = mid;
+                }
+            }
+
+            return (min + max) / 2;
         }
     }
 }

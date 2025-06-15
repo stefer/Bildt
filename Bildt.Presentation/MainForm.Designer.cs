@@ -35,7 +35,7 @@
             splitContainer1 = new SplitContainer();
             listView1 = new ListView();
             imageList1 = new ImageList(components);
-            editFileControl1 = new Components.EditFileControl();
+            editFileControl1 = new Bildt.Presentation.Components.EditFileControl();
             menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)splitContainer1).BeginInit();
             splitContainer1.Panel1.SuspendLayout();
@@ -49,7 +49,8 @@
             menuStrip1.Items.AddRange(new ToolStripItem[] { filToolStripMenuItem });
             menuStrip1.Location = new Point(0, 0);
             menuStrip1.Name = "menuStrip1";
-            menuStrip1.Size = new Size(800, 28);
+            menuStrip1.Padding = new Padding(8, 2, 0, 2);
+            menuStrip1.Size = new Size(1000, 33);
             menuStrip1.TabIndex = 0;
             menuStrip1.Text = "menuStrip1";
             // 
@@ -57,20 +58,21 @@
             // 
             filToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { laddaToolStripMenuItem });
             filToolStripMenuItem.Name = "filToolStripMenuItem";
-            filToolStripMenuItem.Size = new Size(38, 24);
+            filToolStripMenuItem.Size = new Size(45, 29);
             filToolStripMenuItem.Text = "Fil";
             // 
             // laddaToolStripMenuItem
             // 
             laddaToolStripMenuItem.Name = "laddaToolStripMenuItem";
-            laddaToolStripMenuItem.Size = new Size(133, 26);
+            laddaToolStripMenuItem.Size = new Size(162, 34);
             laddaToolStripMenuItem.Text = "Ladda";
             laddaToolStripMenuItem.Click += laddaToolStripMenuItem_Click;
             // 
             // splitContainer1
             // 
             splitContainer1.Dock = DockStyle.Fill;
-            splitContainer1.Location = new Point(0, 28);
+            splitContainer1.Location = new Point(0, 33);
+            splitContainer1.Margin = new Padding(4, 4, 4, 4);
             splitContainer1.Name = "splitContainer1";
             // 
             // splitContainer1.Panel1
@@ -80,8 +82,9 @@
             // splitContainer1.Panel2
             // 
             splitContainer1.Panel2.Controls.Add(editFileControl1);
-            splitContainer1.Size = new Size(800, 422);
-            splitContainer1.SplitterDistance = 200;
+            splitContainer1.Size = new Size(1000, 529);
+            splitContainer1.SplitterDistance = 250;
+            splitContainer1.SplitterWidth = 5;
             splitContainer1.TabIndex = 1;
             // 
             // listView1
@@ -91,12 +94,13 @@
             listView1.FullRowSelect = true;
             listView1.LargeImageList = imageList1;
             listView1.Location = new Point(0, 0);
+            listView1.Margin = new Padding(4, 4, 4, 4);
             listView1.MultiSelect = false;
             listView1.Name = "listView1";
-            listView1.Size = new Size(200, 422);
+            listView1.Size = new Size(250, 529);
             listView1.TabIndex = 0;
             listView1.UseCompatibleStateImageBehavior = false;
-            listView1.SelectedIndexChanged += this.listView1_SelectedIndexChanged;
+            listView1.SelectedIndexChanged += listView1_SelectedIndexChanged;
             // 
             // imageList1
             // 
@@ -108,18 +112,21 @@
             // 
             editFileControl1.Dock = DockStyle.Fill;
             editFileControl1.Location = new Point(0, 0);
+            editFileControl1.Margin = new Padding(5, 5, 5, 5);
             editFileControl1.Name = "editFileControl1";
-            editFileControl1.Size = new Size(596, 422);
+            editFileControl1.Size = new Size(745, 529);
             editFileControl1.TabIndex = 0;
+            editFileControl1.Load += editFileControl1_Load;
             // 
             // MainForm
             // 
-            AutoScaleDimensions = new SizeF(8F, 20F);
+            AutoScaleDimensions = new SizeF(10F, 25F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(800, 450);
+            ClientSize = new Size(1000, 562);
             Controls.Add(splitContainer1);
             Controls.Add(menuStrip1);
             MainMenuStrip = menuStrip1;
+            Margin = new Padding(4, 4, 4, 4);
             Name = "MainForm";
             Text = "Bildt";
             menuStrip1.ResumeLayout(false);

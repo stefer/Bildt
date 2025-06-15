@@ -52,5 +52,10 @@ namespace Bildt.Presentation
                 editFileControl1.SetImage(filePath);
             }
         }
+
+        private void editFileControl1_Load(object sender, EventArgs e)
+        {
+
+        }
     }
 }
