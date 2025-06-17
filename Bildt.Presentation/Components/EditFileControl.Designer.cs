@@ -71,6 +71,7 @@
             descriptionTextBox.ScrollBars = ScrollBars.Vertical;
             descriptionTextBox.Size = new Size(457, 92);
             descriptionTextBox.TabIndex = 0;
+            descriptionTextBox.TextChanged += descriptionTextBox_TextChanged;
             descriptionTextBox.Leave += UpdateDescription;
             // 
             // origPictureBox

@@ -96,5 +96,10 @@ namespace Bildt.Presentation.Components
 
             return (min + max) / 2;
         }
+
+        private void descriptionTextBox_TextChanged(object sender, EventArgs e)
+        {
+
+        }
     }
 }

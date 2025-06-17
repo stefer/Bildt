@@ -11,35 +11,52 @@ namespace Bildt.Presentation
 
         private void laddaToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            using var openFileDialog = new OpenFileDialog()
+            using var folderDialog = new FolderBrowserDialog
             {
-                Title = "Välj bilder",
-                Multiselect = true,
-                Filter = "Bildfiler|*.jpg;*.jpeg;*.png;*.bmp",
+                Description = "Välj en mapp med bilder"
             };
 
-            if (openFileDialog.ShowDialog() == DialogResult.OK)
+            if (folderDialog.ShowDialog() == DialogResult.OK)
             {
-                foreach (var filePath in openFileDialog.FileNames)
+                string selectedFolder = folderDialog.SelectedPath;
+                this.Text = $"Bilder från: {selectedFolder}";
+
+                // Filändelser vi är intresserade av
+                string[] extensions = { ".jpg", ".jpeg", ".png", ".bmp" };
+
+                // Hämta alla bildfiler i mappen
+                var imageFiles = Directory.GetFiles(selectedFolder)
+                                          .Where(file => extensions.Contains(Path.GetExtension(file).ToLower()))
+                                          .ToList();
+
+                //  Rensa gamla bilder och objekt
+                imageList1.Images.Clear();
+                listView1.Items.Clear();
+
+                foreach (var filePath in imageFiles)
                 {
-                    // Generate a thumbnail for the image
+                    // Generera en thumbnail
                     using var image = Image.FromFile(filePath);
                     var thumbnail = image.GetThumbnailImage(64, 64, () => false, IntPtr.Zero);
 
-                    // Add the thumbnail to the ImageList
-                    imageList1.Images.Add(filePath, thumbnail);
+                    // Skippa .gen -filer (om de finns i mappen)
+                    if (filePath.ToLower().Contains(".gen"))
+                        continue;
 
+                    // Lägg till thumbnailen i ImageList
+                    imageList1.Images.Add(filePath, thumbnail);
                     var imageModel = ImageService.GetImage(filePath);
 
-                    // Add the image to the ListView with the thumbnail
+                    // Lägg till i ListView
                     var listViewItem = new ListViewItem
                     {
                         Tag = filePath,
                         Checked = File.Exists(imageModel.TitledImagePath),
                         Text = Path.GetFileName(filePath),
-                        ImageKey = filePath // Use the file path as the key for the thumbnail,
+                        ImageKey = filePath,
                     };
                     listView1.Items.Add(listViewItem);
+
                 }
             }
         }
@@ -54,6 +71,11 @@ namespace Bildt.Presentation
         }
 
         private void editFileControl1_Load(object sender, EventArgs e)
+        {
+
+        }
+
+        private void filToolStripMenuItem_Click(object sender, EventArgs e)
         {
 
         }
