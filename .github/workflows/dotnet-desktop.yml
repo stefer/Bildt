@@ -60,7 +60,7 @@ jobs:
 
     # Publish the application
     - name: Publish
-      run: dotnet publish $env:Solution_Name --configuration $env:Configuration --arch win-x64 --self-contained
+      run: dotnet publish $env:Solution_Name --configuration $env:Configuration --os win --arch x64 --self-contained
       env:
         Configuration: ${{ matrix.configuration }}
 
