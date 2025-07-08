@@ -1,6 +1,10 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <ItemGroup>
+    <Content Include="carl_bildt_icon.ico" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\Bildt.Core\Bildt.Core.csproj" />
     <ProjectReference Include="..\Bildt.Application\Bildt.Application.csproj" />
   </ItemGroup>
@@ -11,7 +15,8 @@
     <Nullable>enable</Nullable>
     <UseWindowsForms>true</UseWindowsForms>
     <ImplicitUsings>enable</ImplicitUsings>
-    <NoWarn>CA1416</NoWarn> <!-- Suppress platform compatibility warning -->
+    <NoWarn>CA1416</NoWarn>
+    <ApplicationIcon>carl_bildt_icon.ico</ApplicationIcon> <!-- Suppress platform compatibility warning -->
   </PropertyGroup>
 
 <ItemGroup>

@@ -142,6 +142,7 @@
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(997, 562);
             Controls.Add(toolStripContainer1);
+            Icon = (Icon)resources.GetObject("$this.Icon");
             Margin = new Padding(4);
             Name = "MainForm";
             Text = "Bildt";
