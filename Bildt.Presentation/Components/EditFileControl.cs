@@ -39,8 +39,8 @@ namespace Bildt.Presentation.Components
 
         private void UpdatePreview(System.Drawing.Image image)
         {
-            var borderSize = Convert.ToInt32(image.Width * 0.05);
-            var borderBottom = Convert.ToInt32(image.Width * 0.10);
+            var borderSize = Convert.ToInt32(image.Width * 0.02);
+            var borderBottom = Convert.ToInt32(image.Width * 0.05);
             var newImage = new Bitmap(image.Width + borderSize * 2, image.Height + borderSize + borderBottom);
             using (var g = Graphics.FromImage(newImage))
             {
