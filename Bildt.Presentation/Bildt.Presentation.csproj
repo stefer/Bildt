@@ -5,6 +5,13 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Include="..\README.md">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\Bildt.Core\Bildt.Core.csproj" />
     <ProjectReference Include="..\Bildt.Application\Bildt.Application.csproj" />
   </ItemGroup>
@@ -16,7 +23,10 @@
     <UseWindowsForms>true</UseWindowsForms>
     <ImplicitUsings>enable</ImplicitUsings>
     <NoWarn>CA1416</NoWarn>
-    <ApplicationIcon>carl_bildt_icon.ico</ApplicationIcon> <!-- Suppress platform compatibility warning -->
+    <ApplicationIcon>carl_bildt_icon.ico</ApplicationIcon>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <AssemblyVersion>1.0.1</AssemblyVersion>
+    <FileVersion>1.0.1</FileVersion> <!-- Suppress platform compatibility warning -->
   </PropertyGroup>
 
 <ItemGroup>

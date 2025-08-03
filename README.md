@@ -1,5 +1,10 @@
-# Bildt - program to add frame and text
+# Bildt - Program för att bränna in text i bildfiler
 
-A program for my father. He wants to burn in text to image files so that they can be used in presentations.
+Detta är ett program som låter dig bränna in text i bildfiler, vilket kan vara användbart för att skapa bilder med text som kan användas i presentationer.
 
 ![Bildt screen dump](Bildt.png)
+
+## Versioner
+
+- 1.0.1: Förbättrad hantering av bildstorlek och textplacering.
+- 1.0.0: Första versionen av Bildt.
