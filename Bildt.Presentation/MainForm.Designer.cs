@@ -33,7 +33,7 @@
             splitContainer1 = new SplitContainer();
             listView1 = new ListView();
             imageList1 = new ImageList(components);
-            editFileControl1 = new Bildt.Presentation.Components.EditFileControl();
+            editFileControl1 = new Components.EditFileControl();
             toolStrip1 = new ToolStrip();
             toolStripButton1 = new ToolStripButton();
             toolStripContainer1 = new ToolStripContainer();
@@ -51,7 +51,6 @@
             // 
             splitContainer1.Dock = DockStyle.Fill;
             splitContainer1.Location = new Point(0, 0);
-            splitContainer1.Margin = new Padding(4);
             splitContainer1.Name = "splitContainer1";
             // 
             // splitContainer1.Panel1
@@ -61,9 +60,8 @@
             // splitContainer1.Panel2
             // 
             splitContainer1.Panel2.Controls.Add(editFileControl1);
-            splitContainer1.Size = new Size(997, 528);
-            splitContainer1.SplitterDistance = 249;
-            splitContainer1.SplitterWidth = 5;
+            splitContainer1.Size = new Size(798, 423);
+            splitContainer1.SplitterDistance = 199;
             splitContainer1.TabIndex = 1;
             // 
             // listView1
@@ -73,10 +71,9 @@
             listView1.FullRowSelect = true;
             listView1.LargeImageList = imageList1;
             listView1.Location = new Point(0, 0);
-            listView1.Margin = new Padding(4);
             listView1.MultiSelect = false;
             listView1.Name = "listView1";
-            listView1.Size = new Size(249, 528);
+            listView1.Size = new Size(199, 423);
             listView1.TabIndex = 0;
             listView1.UseCompatibleStateImageBehavior = false;
             listView1.SelectedIndexChanged += listView1_SelectedIndexChanged;
@@ -89,11 +86,11 @@
             // 
             // editFileControl1
             // 
-            editFileControl1.Dock = DockStyle.Bottom;
-            editFileControl1.Location = new Point(0, -34);
-            editFileControl1.Margin = new Padding(5);
+            editFileControl1.Dock = DockStyle.Fill;
+            editFileControl1.Location = new Point(0, 0);
+            editFileControl1.Margin = new Padding(4, 4, 4, 4);
             editFileControl1.Name = "editFileControl1";
-            editFileControl1.Size = new Size(743, 562);
+            editFileControl1.Size = new Size(595, 423);
             editFileControl1.TabIndex = 0;
             editFileControl1.Load += editFileControl1_Load;
             // 
@@ -104,7 +101,7 @@
             toolStrip1.Items.AddRange(new ToolStripItem[] { toolStripButton1 });
             toolStrip1.Location = new Point(4, 0);
             toolStrip1.Name = "toolStrip1";
-            toolStrip1.Size = new Size(81, 34);
+            toolStrip1.Size = new Size(65, 27);
             toolStrip1.TabIndex = 2;
             toolStrip1.Text = "toolStrip1";
             // 
@@ -114,7 +111,7 @@
             toolStripButton1.Image = (Image)resources.GetObject("toolStripButton1.Image");
             toolStripButton1.ImageTransparentColor = Color.Magenta;
             toolStripButton1.Name = "toolStripButton1";
-            toolStripButton1.Size = new Size(63, 29);
+            toolStripButton1.Size = new Size(52, 24);
             toolStripButton1.Text = "Mapp";
             toolStripButton1.Click += laddaToolStripMenuItem_Click;
             // 
@@ -124,11 +121,13 @@
             // toolStripContainer1.ContentPanel
             // 
             toolStripContainer1.ContentPanel.Controls.Add(splitContainer1);
-            toolStripContainer1.ContentPanel.Size = new Size(997, 528);
+            toolStripContainer1.ContentPanel.Margin = new Padding(2, 2, 2, 2);
+            toolStripContainer1.ContentPanel.Size = new Size(798, 423);
             toolStripContainer1.Dock = DockStyle.Fill;
             toolStripContainer1.Location = new Point(0, 0);
+            toolStripContainer1.Margin = new Padding(2, 2, 2, 2);
             toolStripContainer1.Name = "toolStripContainer1";
-            toolStripContainer1.Size = new Size(997, 562);
+            toolStripContainer1.Size = new Size(798, 450);
             toolStripContainer1.TabIndex = 3;
             toolStripContainer1.Text = "toolStripContainer1";
             // 
@@ -138,12 +137,11 @@
             // 
             // MainForm
             // 
-            AutoScaleDimensions = new SizeF(10F, 25F);
+            AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(997, 562);
+            ClientSize = new Size(798, 450);
             Controls.Add(toolStripContainer1);
             Icon = (Icon)resources.GetObject("$this.Icon");
-            Margin = new Padding(4);
             Name = "MainForm";
             Text = "Bildt";
             splitContainer1.Panel1.ResumeLayout(false);
