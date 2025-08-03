@@ -1,12 +1,17 @@
 ﻿using Bildt.Application.Services;
 using Bildt.Core.Models;
-using static System.Net.Mime.MediaTypeNames;
+using System.ComponentModel;
 
 namespace Bildt.Presentation.Components
 {
     public partial class EditFileControl : UserControl
     {
         private ImageModel? _image;
+
+        [Browsable(true)]
+        [Category("Action")]
+        [Description("Invoked when user saves")]
+        public event EventHandler? SaveClicked;
 
         public EditFileControl()
         {
@@ -21,8 +26,8 @@ namespace Bildt.Presentation.Components
             if (_image != null)
             {
                 descriptionTextBox.Text = _image.Description;
-                System.Drawing.Image image;
-                using (var tmpImage = System.Drawing.Image.FromFile(filePath))
+                Image image;
+                using (var tmpImage = Image.FromFile(filePath))
                 {
                     image = new Bitmap(tmpImage);
                 }
@@ -71,6 +76,7 @@ namespace Bildt.Presentation.Components
             if (_image?.TitledImagePath != null)
             {
                 editedPictureBox.Image?.Save(_image.TitledImagePath, System.Drawing.Imaging.ImageFormat.Jpeg);
+                SaveClicked?.Invoke(this, EventArgs.Empty);
             }
         }
 

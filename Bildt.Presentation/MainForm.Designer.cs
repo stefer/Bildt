@@ -88,11 +88,11 @@
             // 
             editFileControl1.Dock = DockStyle.Fill;
             editFileControl1.Location = new Point(0, 0);
-            editFileControl1.Margin = new Padding(4, 4, 4, 4);
+            editFileControl1.Margin = new Padding(4);
             editFileControl1.Name = "editFileControl1";
             editFileControl1.Size = new Size(595, 423);
             editFileControl1.TabIndex = 0;
-            editFileControl1.Load += editFileControl1_Load;
+            editFileControl1.SaveClicked += editFileControl1_SaveClicked;
             // 
             // toolStrip1
             // 
@@ -121,11 +121,11 @@
             // toolStripContainer1.ContentPanel
             // 
             toolStripContainer1.ContentPanel.Controls.Add(splitContainer1);
-            toolStripContainer1.ContentPanel.Margin = new Padding(2, 2, 2, 2);
+            toolStripContainer1.ContentPanel.Margin = new Padding(2);
             toolStripContainer1.ContentPanel.Size = new Size(798, 423);
             toolStripContainer1.Dock = DockStyle.Fill;
             toolStripContainer1.Location = new Point(0, 0);
-            toolStripContainer1.Margin = new Padding(2, 2, 2, 2);
+            toolStripContainer1.Margin = new Padding(2);
             toolStripContainer1.Name = "toolStripContainer1";
             toolStripContainer1.Size = new Size(798, 450);
             toolStripContainer1.TabIndex = 3;
