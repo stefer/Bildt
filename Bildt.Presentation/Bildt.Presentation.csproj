@@ -12,21 +12,20 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Bildt.Core\Bildt.Core.csproj" />
     <ProjectReference Include="..\Bildt.Application\Bildt.Application.csproj" />
   </ItemGroup>
 
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
-    <TargetFramework>net9.0-windows</TargetFramework>
+    <TargetFramework>net10.0-windows</TargetFramework>
     <Nullable>enable</Nullable>
     <UseWindowsForms>true</UseWindowsForms>
     <ImplicitUsings>enable</ImplicitUsings>
     <NoWarn>CA1416</NoWarn>
     <ApplicationIcon>carl_bildt_icon.ico</ApplicationIcon>
     <PackageReadmeFile>README.md</PackageReadmeFile>
-    <AssemblyVersion>1.0.1</AssemblyVersion>
-    <FileVersion>1.0.1</FileVersion> <!-- Suppress platform compatibility warning -->
+    <AssemblyVersion>1.0.2</AssemblyVersion>
+    <FileVersion>1.0.2</FileVersion> <!-- Suppress platform compatibility warning -->
   </PropertyGroup>
 
 <ItemGroup>

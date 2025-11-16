@@ -6,5 +6,6 @@ Detta är ett program som låter dig bränna in text i bildfiler, vilket kan vara a
 
 ## Versioner
 
+- 1.0.2: Rotera bilder, Uppdatering av beroenden.
 - 1.0.1: Förbättrad hantering av bildstorlek och textplacering.
 - 1.0.0: Första versionen av Bildt.

@@ -1,111 +1,111 @@
-﻿using Bildt.Application.Services;
-using Bildt.Core.Models;
+﻿using Bildt.Application.Models;
+using Bildt.Application.Services;
 using System.ComponentModel;
 
-namespace Bildt.Presentation.Components
+namespace Bildt.Presentation.Components;
+
+public partial class EditFileControl : UserControl
 {
-    public partial class EditFileControl : UserControl
+    private ImageModel? _image;
+
+    [Browsable(true)]
+    [Category("Action")]
+    [Description("Invoked when user saves")]
+    public event EventHandler? SaveClicked;
+
+    public EditFileControl()
     {
-        private ImageModel? _image;
+        InitializeComponent();
+    }
 
-        [Browsable(true)]
-        [Category("Action")]
-        [Description("Invoked when user saves")]
-        public event EventHandler? SaveClicked;
-
-        public EditFileControl()
+    public void SetImage(string filePath)
+    {
+        this.SuspendLayout();
+        ClearPreview();
+        _image = ImageService.GetImage(filePath);
+        if (_image != null)
         {
-            InitializeComponent();
-        }
-
-        public void SetImage(string filePath)
-        {
-            this.SuspendLayout();
-            ClearPreview();
-            _image = ImageService.GetImage(filePath);
-            if (_image != null)
+            descriptionTextBox.Text = _image.Description;
+            Image image;
+            using (var tmpImage = Image.FromFile(filePath))
             {
-                descriptionTextBox.Text = _image.Description;
-                Image image;
-                using (var tmpImage = Image.FromFile(filePath))
-                {
-                    image = new Bitmap(tmpImage);
-                }
-                origPictureBox.Image = image;
-                UpdatePreview(image);
+                image = new Bitmap(tmpImage);
+                image.RotateFlip(_image.RotationFlip);
             }
-            this.ResumeLayout();
+            origPictureBox.Image = image;
+            UpdatePreview(image);
         }
+        this.ResumeLayout();
+    }
 
-        private void ClearPreview()
-        {
-            editedPictureBox.Image = null;
-        }
+    private void ClearPreview()
+    {
+        editedPictureBox.Image = null;
+    }
 
-        private void UpdatePreview(System.Drawing.Image image)
+    private void UpdatePreview(Image image)
+    {
+        var borderSize = Convert.ToInt32(image.Width * 0.02);
+        var borderBottom = Convert.ToInt32(image.Width * 0.05);
+        var newImage = new Bitmap(image.Width + borderSize * 2, image.Height + borderSize + borderBottom);
+        using (var g = Graphics.FromImage(newImage))
         {
-            var borderSize = Convert.ToInt32(image.Width * 0.02);
-            var borderBottom = Convert.ToInt32(image.Width * 0.05);
-            var newImage = new Bitmap(image.Width + borderSize * 2, image.Height + borderSize + borderBottom);
-            using (var g = Graphics.FromImage(newImage))
+            g.FillRectangle(Brushes.White, 0, 0, newImage.Width, newImage.Height);
+            g.DrawImage(image, borderSize, borderSize, image.Width, image.Height);
+            if (_image?.Description != null)
             {
-                g.FillRectangle(Brushes.White, 0, 0, newImage.Width, newImage.Height);
-                g.DrawImage(image, borderSize, borderSize, image.Width, image.Height);
-                if (_image?.Description != null)
-                {
-                    g.DrawString(_image.Description, new System.Drawing.Font("Arial", FindFontSize(g, "XXX", borderBottom * 0.95f) / 2), Brushes.Black, new PointF(borderSize + 10, newImage.Height - borderBottom));
-                }
-                g.Flush();
+                g.DrawString(_image.Description, new Font("Arial", FindFontSize(g, "XXX", borderBottom * 0.95f) / 2), Brushes.Black, new PointF(borderSize + 10, newImage.Height - borderBottom));
             }
-
-            editedPictureBox.Image = newImage;
+            g.Flush();
         }
 
-        private void UpdateDescription(object sender, EventArgs e)
+        editedPictureBox.Image = newImage;
+    }
+
+    private void UpdateDescription(object sender, EventArgs e)
+    {
+        if (_image != null && _image.Description != descriptionTextBox.Text)
         {
-            if (_image != null && _image.Description != descriptionTextBox.Text)
+            _image.Description = descriptionTextBox.Text;
+            ImageService.SetDescription(_image);
+            SetImage(_image.FilePath);
+        }
+    }
+
+    private void Save(object sender, EventArgs e)
+    {
+        if (_image?.TitledImagePath != null)
+        {
+            editedPictureBox.Image?.Save(_image.TitledImagePath, System.Drawing.Imaging.ImageFormat.Jpeg);
+            SaveClicked?.Invoke(this, EventArgs.Empty);
+        }
+    }
+
+    private float FindFontSize(Graphics g, string text, float desiredHeight)
+    {
+        float min = 1f;
+        float max = 200f;
+        float tolerance = 0.5f;
+
+        while (max - min > tolerance)
+        {
+            float mid = (min + max) / 2;
+            using (var testFont = new Font("Arial", mid))
             {
-                _image.Description = descriptionTextBox.Text;
-                ImageService.SetDescription(_image);
-                SetImage(_image.FilePath);
+                float height = g.MeasureString(text, testFont).Height;
+
+                if (height < desiredHeight)
+                    min = mid;
+                else
+                    max = mid;
             }
         }
 
-        private void Save(object sender, EventArgs e)
-        {
-            if (_image?.TitledImagePath != null)
-            {
-                editedPictureBox.Image?.Save(_image.TitledImagePath, System.Drawing.Imaging.ImageFormat.Jpeg);
-                SaveClicked?.Invoke(this, EventArgs.Empty);
-            }
-        }
+        return (min + max) / 2;
+    }
 
-        private float FindFontSize(Graphics g, string text, float desiredHeight)
-        {
-            float min = 1f;
-            float max = 200f;
-            float tolerance = 0.5f;
+    private void descriptionTextBox_TextChanged(object sender, EventArgs e)
+    {
 
-            while (max - min > tolerance)
-            {
-                float mid = (min + max) / 2;
-                using (var testFont = new System.Drawing.Font("Arial", mid))
-                {
-                    float height = g.MeasureString(text, testFont).Height;
-
-                    if (height < desiredHeight)
-                        min = mid;
-                    else
-                        max = mid;
-                }
-            }
-
-            return (min + max) / 2;
-        }
-
-        private void descriptionTextBox_TextChanged(object sender, EventArgs e)
-        {
-
-        }
     }
 }
